@@ -26,6 +26,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export default class HomeComponent implements OnInit {
   isAuthenticated = false;
+  currentUser: String | undefined = "";
+
   listConfig: ArticleListConfig = {
     type: "all",
     filters: {},
@@ -56,11 +58,15 @@ export default class HomeComponent implements OnInit {
       .subscribe(
         (isAuthenticated: boolean) => (this.isAuthenticated = isAuthenticated),
       );
+
+    this.userService.currentUser.subscribe(
+      (currentUser) => (this.currentUser = currentUser?.username),
+    );
   }
 
   setListTo(type: string = "", filters: Object = {}): void {
     // If feed is requested but user is not authenticated, redirect to login
-    if (type === "feed" && !this.isAuthenticated) {
+    if ((type === "feed" || type === "favorited") && !this.isAuthenticated) {
       void this.router.navigate(["/login"]);
       return;
     }

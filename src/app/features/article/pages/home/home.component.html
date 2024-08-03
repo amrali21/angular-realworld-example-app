@@ -24,6 +24,18 @@
               <a
                 class="nav-link"
                 [ngClass]="{
+                  active:
+                    listConfig.type === 'favorited' && !listConfig.filters.tag
+                }"
+                (click)="setListTo('favorited', { favorited: currentUser })"
+              >
+                Favorited
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [ngClass]="{
                   active: listConfig.type === 'all' && !listConfig.filters.tag
                 }"
                 (click)="setListTo('all')"
